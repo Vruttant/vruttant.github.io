@@ -1,11 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@500&display=swap');
 
-#navbar-main {
-    font-family: Raleway;
-}
-
 body{
-    background-color: #212529;
+    background-color: #222;
 }
 
 .headline {
@@ -13,3 +9,39 @@ body{
     letter-spacing:6px;
     font-weight: 100;
 }
+
+.main-content {
+    height: 85vh;
+    width: 100vw;
+    display: table;
+    color: #ffffff;
+    text-align: center;
+    margin:0 auto;
+}
+
+.box {
+    width:100%;
+    display:table-cell;
+    vertical-align: middle;
+}
+
+.bg-darker {
+    background-color: #222;
+}
+
+.text-cyan {
+    color: #0dcaf0;
+}
+
+.text-pink {
+    color: #ef67a5;
+}
+
+.text-green {
+    color: #4AF626;
+}
+
+.text-yellow {
+    color: #f4b400;
+}
+
