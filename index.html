@@ -27,6 +27,12 @@
 
     html { scroll-behavior: smooth; }
 
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--gd); border-radius: 0; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--g); }
+    * { scrollbar-width: thin; scrollbar-color: var(--gd) var(--bg); }
+
     body {
       font-family: var(--fn);
       background: var(--bg);
@@ -465,7 +471,7 @@
     <li><a href="#skills">skills</a></li>
     <li><a href="#projects">projects</a></li>
     <li><a href="#contact">contact</a></li>
-    <li><a href="vbalde_resume.pdf" target="_blank" rel="noopener" style="color:var(--g);border:1px solid var(--gd);padding:3px 10px;">resume ↗</a></li>
+    <li><a href="resume.pdf" target="_blank" rel="noopener" style="color:var(--g);border:1px solid var(--gd);padding:3px 10px;">resume ↗</a></li>
   </ul>
 </nav>
 
