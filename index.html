@@ -1,117 +1,842 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
-    <title>Vruttant Balde</title>
-    <link href="css/index.css" rel="stylesheet">
-    <link href="lib/fontello/css/fontello.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Vruttant Balde — Senior Software Engineer specialising in cloud infrastructure and test automation.">
+  <title>Vruttant Balde // SSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --g:    #00ff41;
+      --gd:   #00aa28;
+      --gk:   #003b0f;
+      --glow: rgba(0,255,65,.08);
+      --bg:   #030603;
+      --sf:   #070d07;
+      --br:   #0c1f0c;
+      --tx:   #6a9f6a;
+      --txb:  #c0e0c0;
+      --bl:   #41aaff;
+      --fn:   'JetBrains Mono', 'Courier New', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--fn);
+      background: var(--bg);
+      color: var(--tx);
+      overflow-x: hidden;
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── overlays ── */
+    #mx {
+      position: fixed; inset: 0;
+      z-index: 0;
+      opacity: .042;
+      pointer-events: none;
+    }
+
+    /* scanlines */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 9998;
+      background: repeating-linear-gradient(
+        to bottom,
+        transparent 0, transparent 3px,
+        rgba(0,0,0,.05) 3px, rgba(0,0,0,.05) 4px
+      );
+      pointer-events: none;
+    }
+
+    /* vignette */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      z-index: 9997;
+      background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.55) 100%);
+      pointer-events: none;
+    }
+
+    main { position: relative; z-index: 1; }
+
+    /* ── nav ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      height: 50px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 36px;
+      background: rgba(3,6,3,.93);
+      border-bottom: 1px solid var(--br);
+      backdrop-filter: blur(14px);
+    }
+
+    .np { font-size: .78rem; font-weight: 600; }
+    .np .nu { color: var(--g); }
+    .np .nh { color: var(--gd); }
+    .np .ns { color: #445544; }
+    .np .npa { color: var(--bl); }
+
+    .nl { display: flex; list-style: none; gap: 28px; }
+    .nl a { font-size: .73rem; color: var(--tx); transition: color .2s; }
+    .nl a::before { content: '> '; color: var(--gd); }
+    .nl a:hover { color: var(--g); }
+
+    /* ── hero ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center;
+      padding: 70px 36px 48px;
+    }
+
+    .hc { max-width: 860px; margin: 0 auto; width: 100%; }
+
+    .hlbl {
+      font-size: .72rem; color: var(--gd);
+      letter-spacing: .2em; text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    /* name + glitch */
+    .hname {
+      font-size: clamp(2.6rem, 7vw, 5.2rem);
+      font-weight: 700; line-height: 1;
+      color: var(--g);
+      letter-spacing: -.02em;
+      margin-bottom: 10px;
+      position: relative;
+      text-shadow: 0 0 40px rgba(0,255,65,.3);
+    }
+
+    .hname::before, .hname::after {
+      content: attr(data-text);
+      position: absolute; inset: 0;
+    }
+
+    .hname::before {
+      color: #ff0055;
+      animation: ga 5s infinite;
+    }
+
+    .hname::after {
+      color: #00eeff;
+      animation: gb 5s infinite;
+    }
+
+    @keyframes ga {
+      0%,84%,100% { opacity:0; transform:none; clip-path:none; }
+      86% { opacity:.7; transform:translateX(-3px); clip-path:polygon(0 18%,100% 18%,100% 32%,0 32%); }
+      88% { opacity:.7; transform:translateX(3px);  clip-path:polygon(0 58%,100% 58%,100% 72%,0 72%); }
+      90% { opacity:0; }
+    }
+
+    @keyframes gb {
+      0%,84%,100% { opacity:0; transform:none; clip-path:none; }
+      87% { opacity:.6; transform:translateX(3px);  clip-path:polygon(0 38%,100% 38%,100% 52%,0 52%); }
+      89% { opacity:.6; transform:translateX(-3px); clip-path:polygon(0 68%,100% 68%,100% 82%,0 82%); }
+      91% { opacity:0; }
+    }
+
+    .hsub {
+      font-size: .88rem; color: var(--tx);
+      margin-bottom: 32px;
+    }
+    .hsub .hl { color: var(--g); }
+
+    /* terminal */
+    .term {
+      background: #020502;
+      border: 1px solid var(--br);
+      border-radius: 7px;
+      overflow: hidden;
+      margin-bottom: 28px;
+      box-shadow:
+        0 0 0 1px rgba(0,255,65,.03),
+        0 20px 60px rgba(0,0,0,.75),
+        0 0 50px rgba(0,255,65,.04);
+    }
+
+    .tbar {
+      display: flex; align-items: center; gap: 7px;
+      padding: 9px 14px;
+      background: #060d06;
+      border-bottom: 1px solid var(--br);
+    }
+
+    .dot { width:11px; height:11px; border-radius:50%; }
+    .dr { background:#ff5f56; }
+    .dy { background:#ffbd2e; }
+    .dg { background:#27c93f; }
+
+    .tbtitle {
+      flex:1; text-align:center;
+      font-size:.68rem; color:#2a3a2a;
+    }
+
+    .tbody {
+      padding: 18px 22px;
+      min-height: 210px;
+      font-size: .81rem;
+      line-height: 1.72;
+    }
+
+    .tl { display: block; }
+
+    /* prompt colours */
+    .tpu { color: var(--g);  font-weight: 700; }
+    .tpat{ color: #445544; }
+    .tph { color: var(--gd); }
+    .tps { color: #1a2e1a; }
+    .tpp { color: var(--bl); }
+    .tpd { color: #8a9a8a; }
+
+    .tcmd { color: var(--txb); }
+    .tout { color: var(--tx); }
+
+    .cg  { color: var(--g);  font-weight: 700; }
+    .ck  { color: var(--gd); }
+    .cv  { color: var(--txb); }
+    .cb  { color: var(--bl); }
+    .cd  { color: #446044; }
+
+    .cur {
+      display: inline-block;
+      width: 7px; height: 1em;
+      background: var(--g);
+      vertical-align: text-bottom;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    /* stats */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 14px;
+    }
+
+    .stat {
+      border: 1px solid var(--br);
+      padding: 18px 14px;
+      background: var(--sf);
+      transition: border-color .3s, box-shadow .3s;
+      cursor: default;
+    }
+
+    .stat:hover {
+      border-color: var(--gd);
+      box-shadow: 0 0 22px var(--glow), inset 0 0 22px var(--glow);
+    }
+
+    .snum {
+      font-size: 2rem; font-weight: 700;
+      color: var(--g); line-height: 1;
+      text-shadow: 0 0 18px rgba(0,255,65,.28);
+    }
+
+    .ssuf { font-size: 1.2rem; font-weight: 700; color: var(--gd); }
+
+    .slbl {
+      font-size: .62rem; color: var(--tx);
+      margin-top: 7px; letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+
+    /* ── section common ── */
+    section:not(#hero) {
+      padding: 76px 36px;
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .sh {
+      display: flex; align-items: center; gap: 18px;
+      margin-bottom: 44px;
+    }
+
+    .scmd { font-size: .8rem; color: var(--g); white-space: nowrap; }
+    .scmd .sd { color: var(--tx); }
+    .srul { flex:1; height:1px; background: linear-gradient(to right, var(--br), transparent); }
+
+    /* reveal */
+    .rv {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .rv.in { opacity:1; transform:translateY(0); }
+
+    /* ── experience ── */
+    .expl { display:flex; flex-direction:column; gap:42px; }
+
+    .expi {
+      display: grid;
+      grid-template-columns: 1fr 175px;
+      gap: 8px 16px;
+      border-left: 1px solid var(--br);
+      padding-left: 22px;
+      position: relative;
+    }
+
+    .expi::before {
+      content:'';
+      position:absolute; left:-4px; top:10px;
+      width:7px; height:7px;
+      background: var(--g); border-radius:50%;
+      box-shadow: 0 0 10px var(--g);
+    }
+
+    .eco  { font-size:.98rem; font-weight:700; color:var(--g); margin-bottom:2px; }
+    .erol { font-size:.8rem;  color:var(--txb); }
+
+    .emeta { text-align:right; }
+    .edate { font-size:.72rem; color:var(--gd); margin-bottom:3px; }
+    .eloc  { font-size:.68rem; color:var(--tx); }
+
+    .ebul {
+      grid-column: 1 / -1;
+      list-style: none;
+      display: flex; flex-direction: column; gap: 6px;
+      margin-top: 2px;
+    }
+
+    .ebul li {
+      font-size: .79rem; color: var(--tx);
+      padding-left: 16px; position: relative;
+      line-height: 1.62;
+    }
+
+    .ebul li::before { content:'▸'; position:absolute; left:0; color:var(--gd); }
+    .ebul .m { color:var(--g); font-weight:700; }
+
+    /* ── skills ── */
+    .skgr {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+      gap: 18px;
+    }
+
+    .skc {
+      border: 1px solid var(--br);
+      background: var(--sf);
+      padding: 20px;
+      transition: border-color .3s;
+    }
+
+    .skc:hover { border-color: var(--gd); }
+
+    .sktitle {
+      font-size: .66rem; letter-spacing: .18em;
+      color: var(--gd); text-transform: uppercase;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+
+    .sktitle::after { content:''; flex:1; height:1px; background:var(--br); }
+
+    .skps { display:flex; flex-wrap:wrap; gap:8px; }
+
+    .pill {
+      font-size: .71rem; padding: 4px 11px;
+      border: 1px solid var(--br); color: var(--txb);
+      transition: all .2s; cursor:default;
+    }
+
+    .pill:hover { border-color:var(--g); color:var(--g); background:var(--glow); }
+
+    /* ── projects ── */
+    .prjl { display:flex; flex-direction:column; gap:18px; }
+
+    .prjc {
+      border: 1px solid var(--br);
+      background: var(--sf); padding: 26px;
+      transition: border-color .3s, box-shadow .3s;
+    }
+
+    .prjc:hover { border-color:var(--gd); box-shadow:0 0 28px var(--glow); }
+
+    .prjtop {
+      display:flex; align-items:center; justify-content:space-between;
+      margin-bottom:10px;
+    }
+
+    .prjname { font-size:.98rem; font-weight:700; color:var(--g); }
+    .prjdate { font-size:.7rem; color:var(--tx); }
+
+    .prjstk { display:flex; gap:7px; flex-wrap:wrap; margin-bottom:13px; }
+
+    .stag {
+      font-size: .66rem; padding: 2px 8px;
+      border: 1px solid var(--gk); color: var(--gd);
+      background: var(--gk);
+    }
+
+    .prjdesc { font-size:.79rem; color:var(--tx); line-height:1.7; }
+
+    /* ── education ── */
+    .edu {
+      border: 1px solid var(--br); background: var(--sf);
+      padding: 20px 24px;
+      display: flex; justify-content:space-between; align-items:flex-start;
+      gap: 16px; flex-wrap: wrap;
+    }
+
+    .eschool { font-size:.9rem; font-weight:700; color:var(--txb); }
+    .edeg    { font-size:.77rem; color:var(--tx); margin-top:4px; }
+    .emeta2  { text-align:right; }
+    .eloc2   { font-size:.72rem; color:var(--gd); }
+    .edates  { font-size:.7rem;  color:var(--tx); margin-top:4px; }
+
+    /* ── contact ── */
+    .ctgr {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 14px;
+    }
+
+    .ctl {
+      display: flex; align-items: center; gap: 12px;
+      padding: 16px 18px;
+      border: 1px solid var(--br); background: var(--sf);
+      color: var(--tx); font-size: .78rem;
+      transition: all .2s;
+    }
+
+    .ctl:hover { border-color:var(--g); background:var(--glow); }
+    .ctl:hover .clv { color:var(--g); }
+
+    .clico { font-size:1rem; color:var(--gd); flex-shrink:0; min-width:18px; }
+    .cllbl { font-size:.6rem; text-transform:uppercase; letter-spacing:.1em; color:var(--tx); display:block; }
+    .clv   { color:var(--txb); display:block; margin-top:2px; font-size:.76rem; }
+
+    /* ── footer ── */
+    footer {
+      position: relative; z-index:1;
+      text-align: center;
+      padding: 22px 32px;
+      font-size: .7rem; color: #1e341e;
+      border-top: 1px solid var(--br);
+    }
+
+    footer .fp { color: var(--gd); }
+
+    /* ── responsive ── */
+    @media (max-width: 680px) {
+      nav { padding: 0 16px; }
+      #hero { padding: 70px 16px 40px; }
+      section:not(#hero) { padding: 56px 16px; }
+      .stats { grid-template-columns: 1fr 1fr; }
+      .stats .stat:last-child { grid-column: span 2; }
+      .expi { grid-template-columns: 1fr; }
+      .emeta { text-align: left; }
+      .hname { font-size: 2.4rem; }
+      .nl { gap: 16px; }
+    }
+
+    @media (max-width: 420px) {
+      .nl { display: none; }
+      .stats { grid-template-columns: 1fr; }
+      .stats .stat:last-child { grid-column: span 1; }
+    }
+  </style>
 </head>
-
 <body>
-    <header class="header-container">
-    </header>
-    <main>
-        <div class="container">
-            <div class="lead">
-                <h1 class="lead__heading">Hi, I'm Vruttant Balde</h1>
-                <div class="lead__sub">
-                    A senior pursuing my Bachelors with an IT major from TIT, Bhopal (MP). I also work as a Full-stack
-                    Developer Intern at BosonQ Psi.
-                </div>
 
-                <div class="call-to-action">
-                    <a href="resume.pdf" target="_blank" class="btn btn--primary">Get my resume</a>
-                </div>
-            </div>
+<canvas id="mx"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="np">
+    <span class="nu">vruttant</span><span class="tpat">@</span><span class="nh">portfolio</span><span class="ns">:</span><span class="npa">~</span><span class="ns">$</span>
+  </div>
+  <ul class="nl">
+    <li><a href="#experience">experience</a></li>
+    <li><a href="#skills">skills</a></li>
+    <li><a href="#projects">projects</a></li>
+    <li><a href="#contact">contact</a></li>
+    <li><a href="vbalde_resume.pdf" target="_blank" rel="noopener" style="color:var(--g);border:1px solid var(--gd);padding:3px 10px;">resume ↗</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hc">
+      <p class="hlbl">// init portfolio.exe</p>
+      <h1 class="hname" data-text="VRUTTANT BALDE">VRUTTANT BALDE</h1>
+      <p class="hsub">Senior Software Engineer &middot; <span class="hl">Cloud Infrastructure</span> &middot; Test Automation</p>
+
+      <div class="term">
+        <div class="tbar">
+          <span class="dot dr"></span>
+          <span class="dot dy"></span>
+          <span class="dot dg"></span>
+          <span class="tbtitle">vruttant &mdash; bash &mdash; 80&times;24</span>
         </div>
-        <div class="container">
-            <h1>Technologies I know </h1>
-            <div class="skill-tags">
-                <div class="skill-tag">HTML</div>
-                <div class="skill-tag">CSS</div>
-                <div class="skill-tag">Bootstrap</div>
-                <div class="skill-tag">Tailwind.CSS</div>
-                <div class="skill-tag">ReactJS</div>
-                <div class="skill-tag">Redux</div>
-                <div class="skill-tag">RTK-Query</div>
-                <div class="skill-tag">Django</div>
-                <div class="skill-tag">DRF</div>
-                <div class="skill-tag">.NET Core</div>
-                <div class="skill-tag">PostgreSQL</div>
-                <div class="skill-tag">Three.js</div>
-                <div class="skill-tag">Docker</div>
-            </div>
+        <div class="tbody" id="tb"></div>
+      </div>
+
+      <div class="stats">
+        <div class="stat">
+          <div><span class="snum" data-to="470">0</span><span class="ssuf">+</span></div>
+          <div class="slbl">Bugs Identified</div>
         </div>
-        <div class="container experience-container">
-            <h1>Experience</h1>
-            <div class="timeline">
-                <div class="timeline__line"></div>
-                <div class="timeline__item">
-                    <div class="experience">
-                        <header class="experience__header">Oct 2021 - Present</header>
-                        <h2 class="experience__name">
-                            Software Developer Intern at BosonQ Psi
-                        </h2>
-                        <div class="skill-tags">
-                        </div>
-                        <ul>
-                            <li>Built various sections of the admin portal (based on Razor pages of ASP.NET Core) which manage the company's revenue and other resources</li>
-                            <li>Documented the changes and migrated the project from Bootstrap version 3.0 to version 5.0</li>
-                            <li>Created a Dashboard for the basic analysis of the company's resources and revenue over a period using Blazor Web Assembly</li>
-                            <li>Worked on the Telecaller Portal's design and converted the wireframe in pixel-perfect web pages using HTML and Bootstrap</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="timeline__item">
-                    <div class="experience">
-                        <header class="experience__header">Feb 2021 - May 2021</header>
-                        <h2 class="experience__name">
-                            Web Developer Intern at TheKabadiwala
-                        </h2>
-                        <div class="skill-tags">
-                        </div>
-                        <p></p>
-                        <ul>
-                            <li>Implemented Authentication using JWT Tokens in Django</li>
-                            <li>Dockerized the Backend Django Application</li>
-                            <li>Built the Simulation Workspace UI using React.js and Tailwind CSS</li>
-                            <li>Built Forms for User signup and login using Formik library</li>
-                            <li>Implemented Client-Side Authentication using Yup library</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+        <div class="stat">
+          <div><span class="snum" data-to="1250">0</span><span class="ssuf">+</span></div>
+          <div class="slbl">Tests Automated</div>
         </div>
-        <div class="container project-container">
-            <h1>My Projects</h1>
-            <div class="project">
-                <div class="project__img-container">
-                    <img class="project__img" src="img/house-party.png" alt="Combustion Screenshot">
-                </div>
-                <div class="project__details">
-                    <h2 class="project__name">
-                        House Party
-                    </h2>
-                    <div class="skill-tags">
-                        <div class="skill-tag">React</div>
-                        <div class="skill-tag">Javascript</div>
-                        <div class="skill-tag">Django</div>
-                        <div class="skill-tag">Material UI</div>
-                        <div class="skill-tag">Spotify API</div>
-                    </div>
-                    <p>
-                        House party is basically a group sessions player for spotify.
-                    <div>
-                        <a class="btn" href="https://github.com/Vruttant/house-party" target="_blank">View Project</a>
-                    </div>
-                    </p>
-                </div>
-            </div>
+        <div class="stat">
+          <div><span class="snum" data-to="70">0</span><span class="ssuf">%</span></div>
+          <div class="slbl">Disruptions Reduced</div>
         </div>
-    </main>
-    <script src="js/index.js"></script>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience">
+    <div class="sh">
+      <span class="scmd"><span class="sd">$</span> cat experience.log</span>
+      <div class="srul"></div>
+    </div>
+    <div class="expl">
+
+      <div class="expi rv">
+        <div>
+          <div class="eco">Zscaler</div>
+          <div class="erol">Senior Software Engineer</div>
+        </div>
+        <div class="emeta">
+          <div class="edate">Feb 2023 &ndash; Present</div>
+          <div class="eloc">Bangalore, KA</div>
+        </div>
+        <ul class="ebul">
+          <li>Automated sanity check packages — reduced service disruption incidents by <span class="m">70%</span> during progressive cloud rollouts</li>
+          <li>Opened <span class="m">470+</span> high-impact bugs, identifying critical vulnerabilities and misconfigurations in cloud infrastructure</li>
+          <li>Automated <span class="m">1,250+</span> test cases (Python, Pytest, Docker) — boosted regression stability by <span class="m">27%</span>, saved <span class="m">2 hrs/run</span></li>
+          <li>Optimised CI/CD containerised test environments using Docker for improved throughput</li>
+          <li>Developed AI-assisted tools to generate scale-testing scenarios for distributed cloud systems</li>
+          <li>Designed Python utilities for automated validation of cloud deployment configurations</li>
+        </ul>
+      </div>
+
+      <div class="expi rv">
+        <div>
+          <div class="eco">BQP</div>
+          <div class="erol">Fullstack Developer Intern</div>
+        </div>
+        <div class="emeta">
+          <div class="edate">Oct 2021 &ndash; Feb 2023</div>
+          <div class="eloc">Bangalore, KA</div>
+        </div>
+        <ul class="ebul">
+          <li>Implemented JWT-based authentication in Django for stateless, scalable session management</li>
+          <li>Dockerized the Django backend — streamlined local development and cross-env deployment</li>
+          <li>Integrated Redux for global state management across React components</li>
+          <li>Built a responsive Simulation Workspace UI with React.js and Tailwind CSS</li>
+        </ul>
+      </div>
+
+      <div class="expi rv">
+        <div>
+          <div class="eco">TheKabadiwala</div>
+          <div class="erol">Web Developer Intern</div>
+        </div>
+        <div class="emeta">
+          <div class="edate">Feb 2021 &ndash; May 2021</div>
+          <div class="eloc">Bhopal, MP</div>
+        </div>
+        <ul class="ebul">
+          <li>Built Admin Portal modules with ASP.NET Core Razor Pages for internal resource management</li>
+          <li>Developed a data visualisation dashboard using Blazor WebAssembly for stakeholder reporting</li>
+          <li>Translated wireframes into pixel-perfect Telecaller Portal pages (HTML, CSS, Bootstrap)</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <div class="sh">
+      <span class="scmd"><span class="sd">$</span> apt list --installed</span>
+      <div class="srul"></div>
+    </div>
+    <div class="skgr">
+      <div class="skc rv">
+        <div class="sktitle">Languages</div>
+        <div class="skps">
+          <span class="pill">Python</span>
+          <span class="pill">JavaScript</span>
+        </div>
+      </div>
+      <div class="skc rv">
+        <div class="sktitle">Frameworks</div>
+        <div class="skps">
+          <span class="pill">React</span>
+          <span class="pill">Django</span>
+          <span class="pill">Pytest</span>
+          <span class="pill">Bootstrap</span>
+          <span class="pill">Tailwind CSS</span>
+        </div>
+      </div>
+      <div class="skc rv">
+        <div class="sktitle">Tools &amp; DevOps</div>
+        <div class="skps">
+          <span class="pill">Git</span>
+          <span class="pill">Docker</span>
+          <span class="pill">CI/CD</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="sh">
+      <span class="scmd"><span class="sd">$</span> ls -la ./projects/</span>
+      <div class="srul"></div>
+    </div>
+    <div class="prjl">
+      <div class="prjc rv">
+        <div class="prjtop">
+          <span class="prjname">Pybasic</span>
+          <span class="prjdate">June 2023</span>
+        </div>
+        <div class="prjstk">
+          <span class="stag">Python</span>
+          <span class="stag">Compiler Design</span>
+          <span class="stag">CLI</span>
+        </div>
+        <p class="prjdesc">
+          A CLI-based interpreter built from scratch using Python and Compiler Design principles.
+          Successfully parsed 100% of defined language grammar rules — from tokenisation and lexing
+          through AST construction to program execution.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- EDUCATION -->
+  <section id="education">
+    <div class="sh">
+      <span class="scmd"><span class="sd">$</span> cat education.md</span>
+      <div class="srul"></div>
+    </div>
+    <div class="edu rv">
+      <div>
+        <div class="eschool">Technocrats Institute of Technology</div>
+        <div class="edeg">Bachelor of Technology &mdash; Information Technology</div>
+      </div>
+      <div class="emeta2">
+        <div class="eloc2">Bhopal, MP</div>
+        <div class="edates">Aug 2019 &ndash; May 2023</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="sh">
+      <span class="scmd"><span class="sd">$</span> ping vruttant --all-interfaces</span>
+      <div class="srul"></div>
+    </div>
+    <div class="ctgr">
+      <a href="mailto:vruttantb@gmail.com" class="ctl rv">
+        <span class="clico">✉</span>
+        <div><span class="cllbl">Email</span><span class="clv">vruttantb@gmail.com</span></div>
+      </a>
+      <a href="https://github.com/Vruttant" target="_blank" rel="noopener" class="ctl rv">
+        <span class="clico">⌥</span>
+        <div><span class="cllbl">GitHub</span><span class="clv">github.com/Vruttant</span></div>
+      </a>
+      <a href="https://linkedin.com/in/vruttantb" target="_blank" rel="noopener" class="ctl rv">
+        <span class="clico">in</span>
+        <div><span class="cllbl">LinkedIn</span><span class="clv">in/vruttantb</span></div>
+      </a>
+      <a href="tel:+917389283204" class="ctl rv">
+        <span class="clico">☏</span>
+        <div><span class="cllbl">Phone</span><span class="clv">+91 738 928 3204</span></div>
+      </a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span class="fp">vruttant@portfolio:~$</span> echo "built with Python intuition &amp; too much caffeine" <span class="cur"></span>
+</footer>
+
+<script>
+// ── MATRIX RAIN ──────────────────────────────────────────────────────────────
+(function () {
+  const cv = document.getElementById('mx');
+  const cx = cv.getContext('2d');
+  const CH = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*<>?/\\|あいうえおカキクケコ'.split('');
+  const FS = 13;
+  let cols, drops, last = 0;
+
+  function resize() {
+    cv.width  = window.innerWidth;
+    cv.height = window.innerHeight;
+    cols  = Math.ceil(cv.width / FS);
+    drops = Array.from({ length: cols }, () => Math.random() * -60);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  function tick(ts) {
+    requestAnimationFrame(tick);
+    if (ts - last < 55) return;
+    last = ts;
+
+    cx.fillStyle = 'rgba(3,6,3,.09)';
+    cx.fillRect(0, 0, cv.width, cv.height);
+    cx.fillStyle = '#00ff41';
+    cx.font = `${FS}px JetBrains Mono, monospace`;
+
+    for (let i = 0; i < cols; i++) {
+      const ch = CH[Math.floor(Math.random() * CH.length)];
+      cx.fillText(ch, i * FS, drops[i] * FS);
+      if (drops[i] * FS > cv.height && Math.random() > 0.975) drops[i] = 0;
+      drops[i]++;
+    }
+  }
+
+  requestAnimationFrame(tick);
+})();
+
+// ── TERMINAL TYPEWRITER ───────────────────────────────────────────────────────
+(function () {
+  const tb  = document.getElementById('tb');
+  const PR  = `<span class="tpu">vruttant</span><span class="tpat">@</span><span class="tph">portfolio</span><span class="tps">:</span><span class="tpp">~</span><span class="tpd">$</span> `;
+  const slp = ms => new Promise(r => setTimeout(r, ms));
+
+  const sessions = [
+    {
+      cmd: 'whoami',
+      out: [`<span class="cg">vruttant_balde</span>`]
+    },
+    {
+      cmd: 'cat profile.json',
+      out: [
+        `<span class="cd">{</span>`,
+        `&nbsp; <span class="ck">"role"</span>&nbsp;&nbsp;&nbsp;: <span class="cv">"Senior Software Engineer"</span>,`,
+        `&nbsp; <span class="ck">"company"</span>: <span class="cv">"Zscaler"</span>,`,
+        `&nbsp; <span class="ck">"focus"</span>&nbsp;&nbsp;: <span class="cv">"Cloud Infra &amp; Test Automation"</span>,`,
+        `&nbsp; <span class="ck">"status"</span>&nbsp;: <span class="cg">"open_to_opportunities"</span>`,
+        `<span class="cd">}</span>`
+      ]
+    },
+    {
+      cmd: 'ls ./stack/',
+      out: [`<span class="cb">python/</span>&nbsp; <span class="cb">javascript/</span>&nbsp; <span class="cb">react/</span>&nbsp; <span class="cb">django/</span>&nbsp; <span class="cb">docker/</span>&nbsp; <span class="cb">pytest/</span>`]
+    }
+  ];
+
+  function addLine(html, cls = '') {
+    const el = document.createElement('div');
+    el.className = 'tl' + (cls ? ' ' + cls : '');
+    el.innerHTML = html;
+    tb.appendChild(el);
+  }
+
+  async function run() {
+    await slp(500);
+
+    for (let si = 0; si < sessions.length; si++) {
+      const s = sessions[si];
+
+      const pLine = document.createElement('div');
+      pLine.className = 'tl';
+      pLine.innerHTML = PR;
+      tb.appendChild(pLine);
+
+      const cmdEl = document.createElement('span');
+      cmdEl.className = 'tcmd';
+      pLine.appendChild(cmdEl);
+
+      const fakeCur = document.createElement('span');
+      fakeCur.className = 'cur';
+      pLine.appendChild(fakeCur);
+
+      for (const ch of s.cmd) {
+        cmdEl.textContent += ch;
+        await slp(36 + Math.random() * 28);
+      }
+      fakeCur.remove();
+
+      await slp(160);
+
+      for (const line of s.out) {
+        await slp(52);
+        addLine(line, 'tout');
+      }
+
+      if (si < sessions.length - 1) {
+        await slp(320);
+        addLine('&nbsp;');
+      }
+    }
+
+    await slp(320);
+    const fin = document.createElement('div');
+    fin.className = 'tl';
+    fin.innerHTML = PR + '<span class="cur"></span>';
+    tb.appendChild(fin);
+  }
+
+  run();
+})();
+
+// ── COUNTER ANIMATION ─────────────────────────────────────────────────────────
+(function () {
+  const els = document.querySelectorAll('.snum[data-to]');
+  const DUR = 1800;
+
+  function animate(el) {
+    const target = parseInt(el.dataset.to, 10);
+    const t0 = performance.now();
+    function frame(now) {
+      const p = Math.min((now - t0) / DUR, 1);
+      const e = 1 - Math.pow(2, -10 * p); // expo ease-out
+      el.textContent = Math.floor(e * target).toLocaleString();
+      if (p < 1) requestAnimationFrame(frame);
+      else el.textContent = target.toLocaleString();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  setTimeout(() => els.forEach(animate), 700);
+})();
+
+// ── SCROLL REVEAL ─────────────────────────────────────────────────────────────
+(function () {
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      const siblings = [...entry.target.parentElement.querySelectorAll('.rv')];
+      const idx = siblings.indexOf(entry.target);
+      setTimeout(() => entry.target.classList.add('in'), idx * 90);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.rv').forEach(el => io.observe(el));
+})();
+</script>
 </body>
-
 </html>
